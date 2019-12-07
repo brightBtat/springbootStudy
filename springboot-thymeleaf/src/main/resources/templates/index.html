@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p th:text="${msg}"></p>
+    <hr>
+    <h3>标准变量表达式</h3>
+    <span th:text="${user.id}">#</span>
+    <span th:text="${user.nick}">昵称</span>
+    <span th:text="${user.phone}">电话</span>
+    <span th:text="${user.email}">邮箱</span>
+    <span th:text="${user.address}">地址</span>
+    <hr>
+    <h3>选择变量表达式</h3>
+    <div th:object="${user}">
+        <p>id: <span th:text="*{id}">id</span></p>
+        <p>nick: <span th:text="*{nick}">nick</span></p>
+        <p>phone: <span th:text="*{phone}">phone</span></p>
+        <p>email: <span th:text="*{email}">email</span></p>
+        <p>address: <span th:text="*{address}">address</span></p>
+    </div>
+    <hr>
+    <h3>url表达式</h3>
+    <a href="http://localhost:8090/springboot/boot/user/info?id=100">查看</a>
+    <a href="info.html" th:href="@{'http://localhost:8090/springboot/boot/user/info?id=' + ${user.id}}">查看</a>
+    <a href="info.html" th:href="@{|http://localhost:8090/springboot/boot/user/info?id=${user.id}|}">查看</a>
+    <hr>
+    <h3>th:action</h3>
+    <form id="login" th:action="@{/boot/user}">
+        ...
+    </form>
+    <form id="login2" action="/boot/user">
+        ...
+    </form>
+    <hr>
+    <h3>th:each使用 --  list</h3>
+    <div th:each="user,userStat:${list}">
+        <p th:text="${userStat.count}"</pth>
+        <p>id: <span th:text="*{user.id}">id</span></p>
+        <p>nick: <span th:text="*{user.nick}">nick</span></p>
+        <p>phone: <span th:text="*{user.phone}">phone</span></p>
+        <p>email: <span th:text="*{user.email}">email</span></p>
+        <p>address: <span th:text="*{user.address}">address</span></p>
+    </div>
+    <h3>th:each使用 --  map</h3>
+    <div th:each="user:${map}">
+        <p th:text="${user.key}"</pth>
+        <p>id: <span th:text="*{user.value.id}">id</span></p>
+        <p>nick: <span th:text="*{user.value.nick}">nick</span></p>
+        <p>phone: <span th:text="*{user.value.phone}">phone</span></p>
+        <p>email: <span th:text="*{user.value.email}">email</span></p>
+        <p>address: <span th:text="*{user.value.address}">address</span></p>
+    </div>
+    <h3>th:each使用 --  array</h3>
+    <div th:each="array:${array}">
+        <p>id: <span th:text="*{array.id}">id</span></p>
+        <p>nick: <span th:text="*{array.nick}">nick</span></p>
+        <p>phone: <span th:text="*{array.phone}">phone</span></p>
+        <p>email: <span th:text="*{array.email}">email</span></p>
+        <p>address: <span th:text="*{array.address}">address</span></p>
+    </div>
+
+    <hr>
+    <h3>th:src的使用</h3>
+    <script th:src="@{/static/js/jquery-3.2.1.min.js}"></script>
+
+    <img th:src="@{/static/images/1.jpg}"/>
+
+    <hr>
+    <h3>th:value的使用</h3>
+    <input type="text" id="nick" name="nick" th:text="${user.nick}">
+
+    <input type="text" id="phone" name="phone" th:value="${user.phone}">
+
+    <input type="text" id="phone1" name="phone1" value="123123241">
+
+    <input type="text" id="phone2" name="phone2" th:attr="value=${user.phone}">
+
+    <hr>
+    <h3>data-th-ref的使用</h3>
+    <span data-th-ref="login">11</span>
+
+
+    <hr>
+    <h3>th:onclick的使用</h3>
+    <span th:attr="data-ref=${user.phone}" th:onclick="'clickMe()'" th:style="'cursor:pointer'">000</span>
+
+    <script>
+        function clickMe() {
+            alert("111");
+        }
+    </script>
+
+    <hr>
+    <h3>th:method的使用</h3>
+    <form th:action="@{/login22}" th:method="post">
+        ...
+    </form>
+
+    <hr>
+    <h3>th:inline的使用 -- 内联文本</h3>
+    <div th:inline="text">
+        [[${user.phone}]]
+    </div>
+
+    <hr>
+    <h3>th:inline的使用 -- 内联脚本</h3>
+    <script th:inline="javascript" type="text/javascript">
+        var user = [[${user.phone}]];
+        alert(user);
+    </script>
+    <script th:inline="javascript" type="text/javascript">
+        var msg = "Hello," + [[${user.phone}]];
+        alert(msg);
+    </script>
+
+    <hr>
+    <h3>字面量  文本字面量</h3>
+    <p th:text="'123'"/>
+    <h3>字面量 数字字面量</h3>
+    <p th:text="'207+12'"></p>
+    <h3>字面量 boolean字面量</h3>
+    <p th:if="${isFlag == false}">
+        执行操作。。。
+    </p>
+    <h3>字面量 null字面量</h3>
+    <p th:if="${user != null}">
+        user不为空
+    </p>
+
+    <hr>
+    <h3>字符串拼接</h3>
+    <p th:text="|i love|"></p>
+</body>
+</html>
